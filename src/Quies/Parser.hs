@@ -42,7 +42,10 @@ symbol = L.symbol sc
 integer :: Parser Int
 integer = lexeme L.decimal
 
+identifier :: Parser Text
+identifier = lexeme $ takeWhile1P (Just "alpha num character") isAlphaNum
+
 term = choice 
     [ Constant <$> integer
-    , Val <$> takeWhile1P (Just "alpha num character") isAlphaNum
+    , Val <$> identifier
     ]

@@ -2,6 +2,9 @@
 
 module Quies.Codegen where
 
+import Data.Text
+import Data.Text.Lazy (toStrict)
+
 -- basic block
 import qualified LLVM.IRBuilder as LLVM
 import qualified LLVM.IRBuilder.Monad as LLVM
@@ -13,6 +16,9 @@ import qualified LLVM.AST.Type as LLVM(i32, i64)
 -- module
 import qualified LLVM.AST as LLVM (Module(..))
 import qualified LLVM.IRBuilder.Module as LLVM
+
+-- LLVM IR pretty-print
+import LLVM.Pretty (ppllvm)
 
 import Quies.AST
 
@@ -27,10 +33,13 @@ codegen (Constant num) = return . LLVM.int64 . fromIntegral $ num
 
 --  runIRBuilder :: IRBuilderState -> IRBuilder a -> (a, [BasicBlock])
 
-build :: Expr -> (LLVM.Operand, [LLVM.BasicBlock])
-build e = LLVM.runIRBuilder LLVM.emptyIRBuilder (codegen e)
+--build :: Expr -> (LLVM.Operand, [LLVM.BasicBlock])
+--build e = LLVM.runIRBuilder LLVM.emptyIRBuilder (codegen e)
 
 -- for actual asm
+build :: Expr -> Text
+build = toStrict . ppllvm . buildMyModule
+
 
 buildMyModule :: Expr -> LLVM.Module
 buildMyModule e = LLVM.buildModule "myModule" $ do

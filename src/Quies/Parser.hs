@@ -23,9 +23,21 @@ parse t =
 expr :: Parser Expr
 expr = makeExprParser term optable
 
+optable =
+    [
+        [ 
+            binary "*" (BinOp Mul),
+            binary "/" (BinOp Div)
+        ],
+        [ 
+            binary "+" (BinOp Add),
+            binary "-" (BinOp Sub)
+        ]
+    ]
+
 binary :: Text -> (Expr -> Expr -> Expr) -> Operator Parser Expr
 binary name f = InfixL  (f <$ symbol name)
-optable = [[ binary "+" Add ]]
+
 
 sc :: Parser ()
 sc = L.space

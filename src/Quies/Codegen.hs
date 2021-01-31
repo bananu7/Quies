@@ -23,10 +23,16 @@ import LLVM.Pretty (ppllvm)
 import Quies.AST
 
 codegen :: LLVM.MonadIRBuilder m => Expr -> m LLVM.Operand
-codegen (Add lhs rhs) = do
+codegen (BinOp op lhs rhs) = do
     lhs' <- codegen lhs
     rhs' <- codegen rhs
-    LLVM.add lhs' rhs'
+
+    case op of
+        Add -> LLVM.add lhs' rhs'
+        Sub -> LLVM.sub lhs' rhs'
+        Mul -> LLVM.mul lhs' rhs'
+        Div -> LLVM.sdiv lhs' rhs'
+
 
 codegen (Val name) = error "not implemented yet"
 codegen (Constant num) = return . LLVM.int64 . fromIntegral $ num

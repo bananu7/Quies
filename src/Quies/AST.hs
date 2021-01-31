@@ -2,4 +2,15 @@ module Quies.AST where
 
 import Data.Text
 
-data Expr = Add Expr Expr | Val Text | Constant Int deriving Show
+data Op =
+      Add
+    | Sub
+    | Mul
+    | Div
+    deriving (Show, Eq)
+
+data Expr =
+      BinOp Op Expr Expr
+    | Val Text
+    | Constant Int
+    deriving Show

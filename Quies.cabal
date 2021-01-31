@@ -15,12 +15,14 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Lib, Quies.Parser
+  exposed-modules:     Lib, Quies.Parser, Quies.AST, Quies.Codegen
   build-depends:       base >= 4.7 && < 5
   default-language:    Haskell2010
   build-depends:       megaparsec,
                        parser-combinators,
-                       text
+                       text,
+                       llvm-hs-pure,
+                       llvm-hs-pretty
 
 executable quiesc
   hs-source-dirs:      compiler

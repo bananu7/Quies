@@ -10,9 +10,9 @@ import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 import Control.Monad.Combinators.Expr
 
-type Parser = Parsec Void Text
+import Quies.AST
 
-data Expr = Add Expr Expr | Val Text | Constant Int deriving Show
+type Parser = Parsec Void Text
 
 parse :: Text -> Expr
 parse t = 
